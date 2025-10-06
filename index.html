@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pushpa Muthu Catering - Premium Corporate Catering Services</title>
+    <style>
+        :root {
+            --primary-color: #111827; /* Charcoal */
+            --secondary-color: #B45309; /* Rich Amber */
+            --accent-gradient: linear-gradient(135deg, #F59E0B, #B45309);
+            --dark-gradient: linear-gradient(135deg, #1F2937, #111827);
+            
+            --text-color: #1F2937; /* Dark Gray */
+            --light-text-color: #6B7281; /* Medium Gray */
+            
+            --bg-light: #F9FAFB; /* Off-White */
+            --bg-white: #FFFFFF;
+            --border-color: #E5E7EB; /* Light Gray for Borders */
+            
+            --accent-green: #10B981; /* Emerald Green */
+            --accent-red: #EF4444; /* Bright Red */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-white);
+            overflow-x: hidden;
+        }
+
+        body.nav-open {
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            transition: transform 0.3s ease-out, background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 30px rgba(0,0,0,0.1);
+        }
+
+        .header.hidden {
+            transform: translateY(-100%);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+            text-decoration: none;
+            transition: text-shadow 0.3s ease;
+        }
+        .logo:hover {
+            text-shadow: 0 0 10px rgba(17, 24, 39, 0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--light-text-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: var(--secondary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .contact-btn {
+            background: var(--accent-gradient);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(180, 83, 9, 0.3);
+        }
+
+        .contact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(180, 83, 9, 0.4);
+        }
+
+        .hamburger {
+            display: none;
+            z-index: 1001;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--bg-white) 0%, var(--bg-light) 100%);
+            padding: 140px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="%23E5E7EB" stroke-width="1" opacity="0.3"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
+        }
+
+        .hero-content { position: relative; z-index: 2; animation: fadeInUp 1s ease-out; }
+        .hero h1 { font-size: 3.5rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1.5rem; line-height: 1.2; animation: slideInLeft 1s ease-out; }
+        .hero-subtitle { font-size: 1.3rem; color: var(--light-text-color); max-width: 700px; margin: 0 auto 2rem; line-height: 1.6; animation: slideInRight 1s ease-out 0.3s both; }
+        .hero-cta { display: inline-flex; gap: 1rem; margin-top: 2rem; animation: fadeInUp 1s ease-out 0.6s both; }
+        .cta-primary, .cta-secondary { padding: 15px 30px; border-radius: 30px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; }
+        .cta-primary { background: var(--accent-gradient); color: white; box-shadow: 0 5px 20px rgba(180, 83, 9, 0.3); }
+        .cta-secondary { background: transparent; color: var(--secondary-color); border: 2px solid var(--secondary-color); }
+        .cta-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(180, 83, 9, 0.4); }
+        .cta-secondary:hover { background: var(--secondary-color); color: white; transform: translateY(-3px); }
+        .hero-stats { display: flex; justify-content: center; gap: 4rem; margin-top: 4rem; animation: fadeInUp 1s ease-out 0.9s both; }
+        .stat-item { text-align: center; padding: 1.5rem; background: rgba(255, 255, 255, 0.7); border-radius: 15px; backdrop-filter: blur(10px); transition: all 0.3s ease; }
+        .stat-item:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .stat-number { font-size: 2.8rem; font-weight: 700; color: var(--primary-color); display: block; }
+        .stat-label { font-size: 0.9rem; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.5rem; }
+
+        /* Shared Section Styles */
+        .section { padding: 100px 0; }
+        .section-title { text-align: center; font-size: 2.8rem; font-weight: 700; color: var(--primary-color); margin-bottom: 1rem; position: relative; }
+        .section-title::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 60px; height: 4px; background: var(--secondary-color); border-radius: 2px; }
+        .section-subtitle { text-align: center; font-size: 1.2rem; color: var(--light-text-color); margin-bottom: 4rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+
+        /* Food Showcase Section */
+        /* .food-showcase { background: var(--bg-white); }
+        .showcase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 3rem; margin-top: 4rem; }
+        .showcase-card { background: var(--bg-white); border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.07); transition: all 0.5s ease; position: relative; }
+        .showcase-card:hover { transform: translateY(-10px); box-shadow: 0 20px 60px rgba(0,0,0,0.12); }
+        .showcase-image { height: 250px; position: relative; overflow: hidden; }
+        .veg-showcase { background: linear-gradient(45deg, #ECFDF5, #D1FAE5); }
+        .nonveg-showcase { background: linear-gradient(45deg, #FFFBEB, #FEF3C7); }
+        .custom-showcase { background: linear-gradient(45deg, #F3F4F6, #E5E7EB); }
+        .showcase-image::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; opacity: 0.3; }
+        .veg-showcase::before { content: '🥗'; }
+        .nonveg-showcase::before { content: '🍖'; }
+        .custom-showcase::before { content: '⚙️'; }
+        .showcase-content { padding: 2rem; }
+        .showcase-card h3 { font-size: 1.5rem; font-weight: 600; color: var(--primary-color); margin-bottom: 1rem; }
+        .showcase-card p { color: var(--light-text-color); margin-bottom: 1rem; }
+        .showcase-items { list-style: none; margin-bottom: 1.5rem; }
+        .showcase-items li { color: var(--light-text-color); margin-bottom: 0.5rem; padding-left: 1.5rem; position: relative; transition: all 0.3s ease; }
+        .showcase-items li:hover { color: var(--primary-color); transform: translateX(5px); }
+        .showcase-items li:before { content: "🔸"; position: absolute; left: 0; } */
+
+
+
+        .showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 2.5rem;
+  align-items: stretch;
+}
+
+.showcase-card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.showcase-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.showcase-image {
+  flex-shrink: 0;
+  height: 250px;
+  overflow: hidden;
+}
+
+.showcase-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.showcase-card:hover .showcase-image img {
+  transform: scale(1.05);
+}
+
+.showcase-content {
+  flex-grow: 1;
+  padding: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+
+
+
+        /* Services Section */
+        .services { background: var(--bg-light); }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; margin-top: 4rem; }
+        .service-card { background: var(--bg-white); border-radius: 20px; padding: 3rem; text-align: left; transition: all 0.5s ease; border: 1px solid var(--border-color); position: relative; overflow: hidden; }
+        .service-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); border-color: var(--secondary-color); }
+        .service-icon { width: 70px; height: 70px; background: var(--accent-gradient); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; margin-bottom: 1.5rem; animation: pulse 2s ease-in-out infinite alternate; }
+        @keyframes pulse { from { box-shadow: 0 0 0 0 rgba(180, 83, 9, 0.4); } to { box-shadow: 0 0 0 10px rgba(180, 83, 9, 0); } }
+        .service-card h3 { font-size: 1.6rem; font-weight: 600; color: var(--primary-color); margin-bottom: 1rem; }
+        .service-card p { color: var(--light-text-color); line-height: 1.7; margin-bottom: 2rem; }
+        .service-features { list-style: none; }
+        .service-features li { color: var(--light-text-color); margin-bottom: 0.8rem; padding-left: 2rem; position: relative; transition: all 0.3s ease; }
+        .service-features li:hover { color: var(--primary-color); transform: translateX(5px); }
+        .service-features li:before { content: "✓"; color: var(--accent-green); font-weight: bold; position: absolute; left: 0; top: 0; }
+
+        /* Why Choose Us Section */
+        .why-choose { background: var(--bg-white); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; margin-top: 4rem; }
+        .feature-card { background: var(--bg-white); padding: 2.5rem; border-radius: 20px; text-align: center; border: 1px solid var(--border-color); transition: all 0.5s ease; }
+        .feature-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.1); border-color: var(--secondary-color); }
+        .feature-icon { width: 80px; height: 80px; background: var(--accent-gradient); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1.5rem; transition: all 0.3s ease; }
+        .feature-card:hover .feature-icon { transform: scale(1.1) rotate(5deg); }
+        .feature-card h3 { font-size: 1.4rem; font-weight: 600; color: var(--primary-color); margin-bottom: 1rem; }
+        .feature-card p { color: var(--light-text-color); line-height: 1.6; }
+
+        /* Pricing Section */
+        .pricing { background: var(--dark-gradient); color: white; }
+        .pricing .section-title, .pricing .section-subtitle { color: white; }
+        .pricing-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2.5rem; margin-top: 4rem; }
+        .pricing-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 3rem; transition: all 0.5s ease; }
+        .pricing-card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); }
+        .pricing-card h3 { font-size: 1.6rem; font-weight: 600; margin-bottom: 1rem; }
+        .pricing-card p { margin-bottom: 2rem; line-height: 1.6; opacity: 0.9; }
+        .pricing-features { list-style: none; text-align: left; margin-bottom: 2rem; }
+        .pricing-features li { margin-bottom: 1rem; padding-left: 2rem; position: relative; opacity: 0.9; transition: all 0.3s ease; }
+        .pricing-features li:hover { opacity: 1; transform: translateX(5px); }
+        .pricing-features li:before { content: "✓"; color: var(--accent-green); font-weight: bold; position: absolute; left: 0; }
+
+        /* Contact Section */
+        .contact { background: var(--bg-light); }
+        /* .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 4rem; } */
+        .contact-info h3 { font-size: 1.8rem; margin-bottom: 2rem; color: var(--primary-color); }
+        .contact-item { display: flex; align-items: flex-start; gap: 1.5rem; margin-bottom: 2.5rem; padding: 1.5rem; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); transition: all 0.3s ease; }
+        .contact-item:hover { transform: translateX(10px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+        .contact-item-icon { width: 50px; height: 50px; background: var(--accent-gradient); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+        .contact-item-content h4 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--primary-color); }
+        .contact-item-content p { color: var(--light-text-color); line-height: 1.5; }
+        .contact-form { background: white; padding: 3rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .contact-form h3 { color: var(--primary-color); margin-bottom: 2rem; font-size: 1.8rem; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.8rem; font-weight: 600; color: var(--text-color); }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 15px; border: 2px solid var(--border-color); border-radius: 10px; font-size: 1rem; transition: all 0.3s ease; background: var(--bg-light); }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--secondary-color); background: white; box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.1); }
+        .form-group input.is-valid, .form-group select.is-valid { border-color: var(--accent-green); }
+        .form-group input.is-invalid, .form-group select.is-invalid { border-color: var(--accent-red); }
+        .submit-btn { background: var(--accent-gradient); color: white; padding: 15px 30px; border: none; border-radius: 30px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; width: 100%; box-shadow: 0 5px 20px rgba(180, 83, 9, 0.3); }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(180, 83, 9, 0.4); }
+        .submit-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none; }
+
+        /* Footer */
+        .footer { background: var(--primary-color); color: #cbd5e0; text-align: center; padding: 3rem 0; }
+
+        /* Animations */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+        
+        .fade-in-up, .fade-in-left, .fade-in-right { opacity: 0; transition: all 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); }
+        .fade-in-up { transform: translateY(50px); }
+        .fade-in-left { transform: translateX(-50px); }
+        .fade-in-right { transform: translateX(50px); }
+        .visible { opacity: 1; transform: translate(0, 0); }
+
+        /* Mobile Responsive */
+        @media (max-width: 992px) {
+             .contact-btn {
+                display: none;
+            }
+            .hamburger {
+                display: block;
+                padding: 15px;
+                cursor: pointer;
+                background-color: transparent;
+                border: none;
+                transition: transform 0.2s ease-in-out;
+            }
+            .hamburger:hover {
+                transform: scale(1.1);
+            }
+            .hamburger-box {
+                width: 30px;
+                height: 24px;
+                display: inline-block;
+                position: relative;
+            }
+            .hamburger-inner {
+                display: block;
+                top: 50%;
+                margin-top: -2px;
+                width: 100%;
+                height: 3px;
+                background-color: var(--primary-color);
+                border-radius: 4px;
+                position: absolute;
+                transition: transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19), background-color 0.3s ease;
+            }
+            .hamburger-inner::before, .hamburger-inner::after {
+                content: "";
+                display: block;
+                width: 100%;
+                height: 3px;
+                background-color: var(--primary-color);
+                border-radius: 4px;
+                position: absolute;
+                transition: transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+            }
+            .hamburger-inner::before { top: -10px; }
+            .hamburger-inner::after { bottom: -10px; }
+            
+            .hamburger.is-active .hamburger-inner { background-color: transparent; }
+            .hamburger.is-active .hamburger-inner::before { transform: rotate(45deg) translate(7px, 7px); }
+            .hamburger.is-active .hamburger-inner::after { transform: rotate(-45deg) translate(7px, -7px); }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 320px;
+                height: 100vh;
+                background: var(--bg-white);
+                flex-direction: column;
+                justify-content: center;
+                gap: 2.5rem;
+                transition: right 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+                box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+            }
+            .nav-links.is-active {
+                right: 0;
+            }
+            .nav-links a { font-size: 1.2rem; }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero-stats { flex-direction: column; gap: 2rem; }
+            .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .form-row { grid-template-columns: 1fr; }
+            .services-grid, .features-grid, .showcase-grid, .pricing-cards { grid-template-columns: 1fr; }
+            .hero-cta { flex-direction: column; align-items: center; }
+            .section-title { font-size: 2.2rem; }
+            .service-card, .contact-info, .contact-form, .pricing-card { padding: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="#home" class="logo">PM CATERING SERVICES</a>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#showcase">Menu</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#why-choose">Why Us</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="#contact" class="contact-btn">Get Quote</a>
+            <button class="hamburger" id="hamburger-btn" aria-label="Open menu" aria-controls="nav-menu" aria-expanded="false">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Professional Corporate Catering Excellence</h1>
+                <p class="hero-subtitle">Trusted by 100+ leading companies across Bengaluru for reliable, premium catering solutions. Contract-based services with transparent per-plate pricing, complete menu customization, and guaranteed professional standards.</p>
+                <div class="hero-cta">
+                    <a href="#contact" class="cta-primary">Request Quote</a>
+                    <a href="#showcase" class="cta-secondary">View Our Menu</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item"><span class="stat-number">500+</span><span class="stat-label">Corporate Events Delivered</span></div>
+                    <div class="stat-item"><span class="stat-number">100+</span><span class="stat-label">Business Clients Served</span></div>
+                    <div class="stat-item"><span class="stat-number">5+</span><span class="stat-label">Years of Excellence</span></div>
+                    <div class="stat-item"><span class="stat-number">50+</span><span class="stat-label">Menu Varieties</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Food Showcase Section -->
+    <!-- <section id="showcase" class="section food-showcase">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Our Menu Showcase</h2>
+            <p class="section-subtitle fade-in-up">Extensive variety of fresh, delicious options with complete customization flexibility.</p>
+            <div class="showcase-grid">
+                <div class="showcase-card fade-in-up">
+                    <div class="showcase-image veg-showcase"></div>
+                    <div class="showcase-content">
+                        <h3>Vegetarian Delights</h3>
+                        <p>Fresh, nutritious vegetarian options prepared with premium ingredients and authentic flavors.</p>
+                        <ul class="showcase-items">
+                            <li>Paneer Butter Masala with Naan/Rice</li>
+                            <li>Dal Tadka & Mixed Vegetable Curry</li>
+                            <li>Veg Biryani with Raita & Pickle</li>
+                            <li>South Indian Meals (Sambar, Rasam, Curry)</li>
+                            <li>Fresh Salads & Chutneys</li>
+                            <li>Rotis, Parathas & Variety Rice</li>
+                            <li>Traditional Sweets & Desserts</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="showcase-card fade-in-up">
+                    <div class="showcase-image nonveg-showcase"></div>
+                    <div class="showcase-content">
+                        <h3>Non-Vegetarian Specialties</h3>
+                        <p>Premium quality meat and seafood dishes prepared with authentic spices and cooking techniques.</p>
+                        <ul class="showcase-items">
+                            <li>Chicken Butter Masala & Tandoori</li>
+                            <li>Mutton Curry & Biryani</li>
+                            <li>Fish Curry & Fried Preparations</li>
+                            <li>Egg Curry & Fried Rice</li>
+                            <li>Kebabs & Grilled Items</li>
+                            <li>Continental Non-Veg Options</li>
+                            <li>Regional Specialties (Andhra, Tamil, etc.)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="showcase-card fade-in-up">
+                    <div class="showcase-image custom-showcase"></div>
+                    <div class="showcase-content">
+                        <h3>Complete Customization</h3>
+                        <p>Tailor your menu exactly to your requirements with our flexible customization options.</p>
+                         <ul class="showcase-items">
+                            <li>Mix & Match Any Items</li>
+                            <li>Dietary Restriction Accommodations</li>
+                            <li>Portion Size Adjustments</li>
+                            <li>Spice Level Customization</li>
+                            <li>Special Theme-Based Menus</li>
+                            <li>Seasonal Menu Variations</li>
+                            <li>Corporate Branding Options</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <section id="showcase" class="section food-showcase">
+        <div class="container">
+          <h2 class="section-title fade-in-up">Our Menu Showcase</h2>
+          <p class="section-subtitle fade-in-up">
+            Extensive variety of fresh, delicious options with complete customization flexibility.
+          </p>
+      
+          <div class="showcase-grid">
+            <!-- VEG -->
+            <div class="showcase-card fade-in-up">
+              <div class="showcase-image">
+                <img src="VegMealsStandard_960x.png.webp" alt="">
+          
+            <!-- <img
+            src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=1200&q=80"
+            alt="Vegetarian catering dishes"
+          /> -->
+              </div>
+              <div class="showcase-content">
+                <h3>Vegetarian Delights</h3>
+                <p>
+                  Fresh, nutritious vegetarian options prepared with premium ingredients and authentic flavors.
+                </p>
+                <ul class="showcase-items">
+                  <li>Paneer Butter Masala with Naan/Rice</li>
+                  <li>Dal Tadka & Mixed Vegetable Curry</li>
+                  <li>Veg Biryani with Raita & Pickle</li>
+                  <li>South Indian Meals (Sambar, Rasam, Curry)</li>
+                  <li>Fresh Salads & Chutneys</li>
+                  <li>Rotis, Parathas & Variety Rice</li>
+                  <li>Traditional Sweets & Desserts</li>
+                </ul>
+              </div>
+            </div>
+      
+            <!-- NON-VEG -->
+            <div class="showcase-card fade-in-up">
+              <div class="showcase-image">
+                <img
+            src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?w=1200&q=80"
+            alt="Non-vegetarian catering platter with grilled meats and biryani"
+            />
+              </div>
+              <div class="showcase-content">
+                <h3>Non-Vegetarian Specialties</h3>
+                <p>
+                  Premium quality meat and seafood dishes prepared with authentic spices and cooking techniques.
+                </p>
+                <ul class="showcase-items">
+                  <li>Chicken Butter Masala & Tandoori</li>
+                  <li>Mutton Curry & Biryani</li>
+                  <li>Fish Curry & Fried Preparations</li>
+                  <li>Egg Curry & Fried Rice</li>
+                  <li>Kebabs & Grilled Items</li>
+                  <li>Continental Non-Veg Options</li>
+                  <li>Regional Specialties (Andhra, Tamil, etc.)</li>
+                </ul>
+              </div>
+            </div>
+      
+            <!-- CUSTOM -->
+            <div class="showcase-card fade-in-up">
+              <div class="showcase-image">
+                <img
+            src="https://images.unsplash.com/photo-1555243896-c709bfa0b564?w=1200&q=80"
+            alt="Custom themed event catering buffet setup"
+            />
+              </div>
+              <div class="showcase-content">
+                <h3>Complete Customization</h3>
+                <p>
+                  Tailor your menu exactly to your requirements with our flexible customization options.
+                </p>
+                <ul class="showcase-items">
+                  <li>Mix & Match Any Items</li>
+                  <li>Dietary Restriction Accommodations</li>
+                  <li>Portion Size Adjustments</li>
+                  <li>Spice Level Customization</li>
+                  <li>Special Theme-Based Menus</li>
+                  <li>Seasonal Menu Variations</li>
+                  <li>Corporate Branding Options</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+
+    <!-- Services Section -->
+    <section id="services" class="section services">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Our Professional Services</h2>
+            <p class="section-subtitle fade-in-up">Comprehensive catering solutions designed to meet the diverse needs of corporate clients and event organizers.</p>
+            <div class="services-grid">
+                <div class="service-card fade-in-left">
+                    <div class="service-icon">🏢</div>
+                    <h3>Corporate Catering</h3>
+                    <p>Tailored services for businesses, including daily meals, board meetings, conferences, and large corporate events.</p>
+                    <ul class="service-features">
+                        <li>Long-term contract agreements</li>
+                        <li>Flexible & timely delivery</li>
+                        <li>Dedicated account management</li>
+                    </ul>
+                </div>
+                <div class="service-card fade-in-up">
+                    <div class="service-icon">🎉</div>
+                    <h3>Event & Party Catering</h3>
+                    <p>Full-service catering for private events, celebrations, weddings, and special occasions with personalized menu planning.</p>
+                    <ul class="service-features">
+                        <li>Custom menu development</li>
+                        <li>Professional serving staff</li>
+                        <li>Complete venue setup/cleanup</li>
+                    </ul>
+                </div>
+                <div class="service-card fade-in-right">
+                    <div class="service-icon">🍽️</div>
+                    <h3>Menu Customization</h3>
+                    <p>Complete flexibility in menu selection, accommodating all dietary preferences, restrictions, and cultural requirements.</p>
+                    <ul class="service-features">
+                        <li>Extensive vegetarian & non-veg menus</li>
+                        <li>Healthy & diet-conscious choices</li>
+                        <li>Chef consultation and tastings</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section id="why-choose" class="section why-choose">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Why Leading Companies Choose Us</h2>
+            <p class="section-subtitle fade-in-up">Proven track record of delivering exceptional catering services with professionalism, reliability, and consistent quality.</p>
+            <div class="features-grid">
+                <div class="feature-card fade-in-left"><div class="feature-icon">📋</div><h3>Contract-Based Excellence</h3><p>Flexible contracts with guaranteed service levels and consistent quality.</p></div>
+                <div class="feature-card fade-in-up"><div class="feature-icon">💰</div><h3>Transparent Pricing</h3><p>Clear, competitive per-plate pricing with no hidden fees.</p></div>
+                <div class="feature-card fade-in-right"><div class="feature-icon">🍽️</div><h3>Menu Flexibility</h3><p>Extensive options with full customization for dietary needs.</p></div>
+                <div class="feature-card fade-in-left"><div class="feature-icon">⏰</div><h3>Reliable Delivery</h3><p>Punctual service with professional logistics management.</p></div>
+                <div class="feature-card fade-in-up"><div class="feature-icon">✅</div><h3>Quality Assurance</h3><p>Rigorous standards using fresh ingredients and standardized recipes.</p></div>
+                <div class="feature-card fade-in-right"><div class="feature-icon">🎯</div><h3>Professional Standards</h3><p>Experienced, uniformed team trained in corporate etiquette.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="section pricing">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Simple, Transparent Pricing</h2>
+            <p class="section-subtitle fade-in-up">Competitive per-plate pricing with volume discounts for corporate clients.</p>
+            <div class="pricing-cards">
+                <div class="pricing-card fade-in-left"><h3>Corporate Daily Meals</h3><p>Perfect for regular office meal services and employee lunch programs.</p><ul class="pricing-features"><li>Starting from ₹200 per plate (Veg)</li><li>Starting from ₹300 per plate(Non-Veg)</li><li>Monthly contract pricing available</li><li>Flexible menu rotation</li><li>Volume discounts for 200+ plates daily</li>
+                    <li>No minimum order requirements</li>
+                    <li>Flexible menu rotation options</li>
+                    <li>Special rates for long-term contracts</li>
+                    <li>Free delivery within 10km radius</li></ul></div>
+                <div class="pricing-card fade-in-up"><h3>Corporate Events</h3><p>For business meetings, conferences, and corporate events.</p><ul class="pricing-features"><li>Starting from ₹250 per plate (Premium)</li><li>Includes setup and serving staff</li><li>Customizable menu options</li><li>Includes setup and serving staff</li>
+                    <li>Professional presentation and service</li>
+                    <li>Customizable menu options</li>
+                    <li>Equipment and tableware included</li>
+                    <li>Same-day service available</li>
+                    <li>24-hour advance booking preferred</li></ul></div>
+                <div class="pricing-card fade-in-right"><h3>Special Events</h3><p>Premium services for weddings, celebrations, and special occasions.</p><ul class="pricing-features"><li>Starting from ₹180-₹200 per plate (Deluxe)</li><li>Complete event management</li><li>Multiple course meal options</li><li>Complete event management included</li>
+                    <li>Professional serving and setup crew</li>
+                    <li>Decoration and theme coordination</li>
+                    <li>Multiple course meal options</li>
+                    <li>Custom menu development</li>
+                    <li>Photography and documentation services</li></ul></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Request a Detailed Quote</h2>
+            <p class="section-subtitle fade-in-up">Get in touch to discuss your requirements and receive a customized quote within 24 hours.</p>
+            <div class="contact-grid">
+                <div class="contact-info fade-in-left">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item"><div class="contact-item-icon">📧</div><div class="contact-item-content"><h4>Email</h4><p>info@pushpamuthucatering.com<br>quotes@pushpamuthucatering.com<br>corporate@pushpamuthucatering.com</p></div></div>
+                    <div class="contact-item"><div class="contact-item-icon">📞</div><div class="contact-item-content"><h4>Phone</h4><p>Primary: +91 98765 43210<br>Secondary: +91 87654 32109<br>Corporate Line: +91 76543 21098</p></div></div>
+                    <div class="contact-item"><div class="contact-item-icon">📍</div><div class="contact-item-content"><h4>Service Area</h4><p>Bengaluru City & All Surrounding Areas<br>Corporate locations across Karnataka<br>Special arrangements for outstation events</p></div></div>
+                    <div class="contact-item"><div class="contact-item-icon">⏰</div><div class="contact-item-content"><h4>Business Hours</h4><p>Monday - Sunday: 8:00 AM - 10:00 PM<br>24/7 support for contract clients<br>Emergency catering services available</p></div></div>
+                </div>
+                <!-- <div class="contact-form fade-in-right"> -->
+                    <!-- <h3>Quote Request Form</h3> -->
+                    <!-- <form id="quote-form">
+                        <div class="form-row">
+                            <div class="form-group"><label for="name">Full Name *</label><input type="text" id="name" name="name" required></div>
+                            <div class="form-group"><label for="company">Company Name</label><input type="text" id="company" name="company"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="email">Email *</label><input type="email" id="email" name="email" required></div>
+                            <div class="form-group"><label for="phone">Phone *</label><input type="tel" id="phone" name="phone" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="event-type">Service Type *</label><select id="event-type" name="event-type" required><option value="">Select Service</option><option value="corporate-daily">Daily Corporate Meals</option><option value="corporate-event">Corporate Event</option><option value="parties">Private Party</option><option value="weddings">Wedding</option><option value="other">Other</option></select></div>
+                            <div class="form-group"><label for="guests">Number of People *</label><input type="number" id="guests" name="guests" min="1" required></div>
+                        </div>
+                        <div class="form-group"><label for="requirements">Detailed Requirements</label><textarea id="requirements" name="requirements" rows="4" placeholder="e.g., menu preferences, dietary restrictions, event date..."></textarea></div>
+                        <button type="submit" class="submit-btn">Send Quote Request</button>
+                    </form> -->
+                <!-- </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 PM Catering. All rights reserved. | Professional Corporate Catering in Bengaluru, Karnataka</p>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const header = document.querySelector('.header');
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const navMenu = document.getElementById('nav-menu');
+        const navLinks = navMenu.querySelectorAll('a');
+
+        // Mobile Navigation Toggle
+        hamburgerBtn.addEventListener('click', () => {
+            const isActive = hamburgerBtn.classList.toggle('is-active');
+            navMenu.classList.toggle('is-active');
+            document.body.classList.toggle('nav-open');
+            hamburgerBtn.setAttribute('aria-expanded', isActive);
+        });
+
+        // Close mobile menu when a link is clicked
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (navMenu.classList.contains('is-active')) {
+                    hamburgerBtn.classList.remove('is-active');
+                    navMenu.classList.remove('is-active');
+                    document.body.classList.remove('nav-open');
+                    hamburgerBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+
+        // Header scroll effects
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+
+            if (scrollTop > lastScrollTop && scrollTop > 300) {
+                header.classList.add('hidden');
+            } else {
+                header.classList.remove('hidden');
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        }, { passive: true });
+
+        // Scroll animations
+        const animatedElements = document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        animatedElements.forEach(el => observer.observe(el));
+
+        // Active navigation highlighting on scroll
+        const sections = document.querySelectorAll('section');
+        const allNavLinks = document.querySelectorAll('#nav-menu a');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            allNavLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        }, { passive: true });
+
+
+        // Form Handling
+        const quoteForm = document.getElementById('quote-form');
+        const requiredInputs = quoteForm.querySelectorAll('[required]');
+
+        const validateField = (field) => {
+            if (field.checkValidity()) {
+                field.classList.remove('is-invalid');
+                field.classList.add('is-valid');
+                return true;
+            } else {
+                field.classList.remove('is-valid');
+                field.classList.add('is-invalid');
+                return false;
+            }
+        };
+
+        requiredInputs.forEach(input => {
+            input.addEventListener('blur', (e) => validateField(e.target));
+            input.addEventListener('input', (e) => { // Live validation
+                 if (e.target.classList.contains('is-invalid')) {
+                    validateField(e.target);
+                 }
+            });
+        });
+
+        quoteForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const isFormValid = Array.from(requiredInputs).every(validateField);
+
+            if (isFormValid) {
+                const submitBtn = quoteForm.querySelector('.submit-btn');
+                submitBtn.textContent = 'Sending...';
+                submitBtn.disabled = true;
+
+                setTimeout(() => {
+                    alert('Thank you for your request! Our team will contact you within 24 hours with a detailed proposal.');
+                    quoteForm.reset();
+                    requiredInputs.forEach(input => {
+                        input.classList.remove('is-valid', 'is-invalid');
+                    });
+                    submitBtn.textContent = 'Send Quote Request';
+                    submitBtn.disabled = false;
+                }, 1500);
+            } else {
+                alert('Please fill out all required fields correctly.');
+                // Focus on the first invalid field
+                quoteForm.querySelector('.is-invalid').focus();
+            }
+        });
+    });
+    </script>
+</body>
+</html>
